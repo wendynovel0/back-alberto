@@ -11,7 +11,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateBrandSupplierDto {
   @ApiProperty({
-    example: 'Proveedor de Materiales Premium S.A.',
+    example: 'Proveedor11 Ejemplo',
     description: 'Nombre completo del proveedor',
     maxLength: 100,
   })
@@ -21,7 +21,7 @@ export class CreateBrandSupplierDto {
   name: string;
 
   @ApiPropertyOptional({
-    example: 'Juan Pérez',
+    example: null,
     description: 'Persona de contacto en el proveedor',
     maxLength: 100,
   })
@@ -31,7 +31,7 @@ export class CreateBrandSupplierDto {
   contactPerson?: string;
 
   @ApiProperty({
-    example: 'contacto@proveedormaterials.com',
+    example: 'proveedor11@ejemplo.com',
     description: 'Email único del proveedor',
     maxLength: 100,
   })
@@ -41,7 +41,7 @@ export class CreateBrandSupplierDto {
   email: string;
 
   @ApiPropertyOptional({
-    example: '9876543210',
+    example: null,
     description: 'Teléfono de contacto (10 dígitos)',
     minLength: 10,
     maxLength: 10,
@@ -52,7 +52,7 @@ export class CreateBrandSupplierDto {
   phone?: string;
 
   @ApiPropertyOptional({
-    example: 'Av. Industrial 123, Lima, Perú',
+    example: null,
     description: 'Dirección completa del proveedor',
   })
   @IsOptional()
@@ -60,12 +60,12 @@ export class CreateBrandSupplierDto {
   address?: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'ID de la marca a la que está asociado el proveedor',
+    example: 10,
+    description: 'ID de la marca asociada al proveedor',
   })
   @IsNotEmpty()
   @IsInt()
-  brand_id: number;
+  brandId: number;
 
   @ApiPropertyOptional({
     example: true,

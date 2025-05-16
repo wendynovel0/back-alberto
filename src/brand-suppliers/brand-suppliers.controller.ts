@@ -141,7 +141,7 @@ export class BrandSuppliersController {
     return this.brandSuppliersService.findOne(id);
   }
 
-  @Post()
+   @Post()
   @ApiOperation({ 
     summary: 'Crear un nuevo proveedor',
     description: 'Registra un nuevo proveedor en el sistema. El email debe ser único.'
@@ -167,6 +167,21 @@ export class BrandSuppliersController {
           address: 'Calle Ejemplo 123, Lima, Perú',
           brandId: 2,
           isActive: true
+        }
+      },
+      'Proveedor11 Ejemplo': {
+        summary: 'Ejemplo completo con campos nulos',
+        value: {
+          id: 13,
+          name: 'Proveedor11 Ejemplo',
+          contactPerson: null,
+          email: 'proveedor11@ejemplo.com',
+          phone: null,
+          address: null,
+          isActive: true,
+          createdAt: '2025-05-16',
+          updatedAt: '2025-05-16',
+          brandId: 10
         }
       }
     }
@@ -234,6 +249,7 @@ export class BrandSuppliersController {
   ): Promise<BrandSupplier> {
     return this.brandSuppliersService.create(createBrandSupplierDto, req.user);
   }
+
 
   @Put(':id')
   @ApiOperation({ 

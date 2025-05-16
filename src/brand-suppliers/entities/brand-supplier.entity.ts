@@ -11,7 +11,7 @@ export class BrandSupplier extends DateAudit {
   name: string;
 
   @Column({ name: 'contact_person', length: 100, nullable: true })
-  contactPerson: string;z
+  contactPerson: string;
 
   @Column({ name: 'email', length: 100, nullable: false, unique: true })
   email: string;
@@ -28,4 +28,10 @@ export class BrandSupplier extends DateAudit {
 
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
+
+  @Column({ name: 'created_by', type: 'uuid', nullable: true })
+  createdBy: string;
+
+  @Column({ name: 'updated_by', type: 'uuid', nullable: true })
+  updatedBy: string;
 }

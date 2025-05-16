@@ -65,7 +65,7 @@ export class CreateBrandSupplierDto {
   })
   @IsNotEmpty()
   @IsInt()
-  brandId: number;
+  brand_id: number;
 
   @ApiPropertyOptional({
     example: true,

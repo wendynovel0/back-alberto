@@ -1,11 +1,19 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, IsBoolean } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  IsBoolean,
+  IsInt,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateBrandSupplierDto {
   @ApiProperty({
     example: 'Proveedor de Materiales Premium S.A.',
     description: 'Nombre completo del proveedor',
-    maxLength: 100
+    maxLength: 100,
   })
   @IsNotEmpty()
   @IsString()
@@ -15,7 +23,7 @@ export class CreateBrandSupplierDto {
   @ApiPropertyOptional({
     example: 'Juan Pérez',
     description: 'Persona de contacto en el proveedor',
-    maxLength: 100
+    maxLength: 100,
   })
   @IsOptional()
   @IsString()
@@ -25,7 +33,7 @@ export class CreateBrandSupplierDto {
   @ApiProperty({
     example: 'contacto@proveedormaterials.com',
     description: 'Email único del proveedor',
-    maxLength: 100
+    maxLength: 100,
   })
   @IsNotEmpty()
   @IsEmail()
@@ -36,7 +44,7 @@ export class CreateBrandSupplierDto {
     example: '9876543210',
     description: 'Teléfono de contacto (10 dígitos)',
     minLength: 10,
-    maxLength: 10
+    maxLength: 10,
   })
   @IsOptional()
   @IsString()
@@ -45,7 +53,7 @@ export class CreateBrandSupplierDto {
 
   @ApiPropertyOptional({
     example: 'Av. Industrial 123, Lima, Perú',
-    description: 'Dirección completa del proveedor'
+    description: 'Dirección completa del proveedor',
   })
   @IsOptional()
   @IsString()
@@ -53,15 +61,16 @@ export class CreateBrandSupplierDto {
 
   @ApiProperty({
     example: 1,
-    description: 'ID de la marca a la que está asociado el proveedor'
+    description: 'ID de la marca a la que está asociado el proveedor',
   })
   @IsNotEmpty()
-  brandId: number;
+  @IsInt()
+  brand_id: number;
 
   @ApiPropertyOptional({
     example: true,
     description: 'Indica si el proveedor está activo',
-    default: true
+    default: true,
   })
   @IsOptional()
   @IsBoolean()

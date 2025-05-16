@@ -19,7 +19,7 @@ export class BrandSuppliersService {
     const where: any = {};
     
     if (filters?.brandId) {
-      where.brand = { brandId: filters.brandId };
+      where.brand = { brand_id: filters.brandId }; 
     }
     
     if (filters?.isActive !== undefined) {

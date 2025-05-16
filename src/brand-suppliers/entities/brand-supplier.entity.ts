@@ -11,7 +11,7 @@ export class BrandSupplier extends DateAudit {
   name: string;
 
   @Column({ name: 'contact_person', length: 100, nullable: true })
-  contactPerson: string;
+  contactPerson: string;z
 
   @Column({ name: 'email', length: 100, nullable: false, unique: true })
   email: string;

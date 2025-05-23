@@ -29,9 +29,9 @@ export class BrandSupplier extends DateAudit {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column({ name: 'created_by', type: 'uuid', nullable: true })
+  @Column({ name: 'created_at', type: 'uuid', nullable: true })
   createdBy: string;
 
-  @Column({ name: 'updated_by', type: 'uuid', nullable: true })
+  @Column({ name: 'updated_at', type: 'uuid', nullable: true })
   updatedBy: string;
 }

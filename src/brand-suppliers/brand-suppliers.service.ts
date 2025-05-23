@@ -16,22 +16,23 @@ export class BrandSuppliersService {
   ) {}
 
   async findAll(filters?: { brandId?: number; isActive?: boolean }): Promise<BrandSupplier[]> {
-    const where: any = {};
-    
-    if (filters?.brandId) {
-      where.brand = { brand_id: filters.brandId }; 
-    }
-    
-    if (filters?.isActive !== undefined) {
-      where.isActive = filters.isActive;
-    }
-
-    return this.brandSupplierRepository.find({
-      where,
-      relations: ['brand'],
-      order: { name: 'ASC' },
-    });
+  const where: any = {};
+  
+  if (filters?.brandId) {
+    where.brand = { brand_id: filters.brandId };
   }
+
+  if (filters?.isActive !== undefined) {
+    where.isActive = filters.isActive;
+  }
+
+  return this.brandSupplierRepository.find({
+    where,
+    relations: ['brand'],
+    order: { name: 'ASC' },
+  });
+}
+
 
   async findOne(id: number): Promise<BrandSupplier> {
     const supplier = await this.brandSupplierRepository.findOne({

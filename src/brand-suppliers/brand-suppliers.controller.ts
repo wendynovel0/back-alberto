@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Patch, Delete, ParseIntPipe, UseGuards, Request, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Patch, Delete, ParseIntPipe, UseGuards, Request, Query , BadRequestException, InternalServerErrorException} from '@nestjs/common';
 import { BrandSuppliersService } from './brand-suppliers.service';
 import { CreateBrandSupplierDto } from './dto/create-brand-supplier.dto';
 import { UpdateBrandSupplierDto } from './dto/update-brand-supplier.dto';
@@ -15,78 +15,76 @@ export class BrandSuppliersController {
   constructor(private readonly brandSuppliersService: BrandSuppliersService) {}
 
   @Get()
-  @ApiOperation({ 
-    summary: 'Obtener proveedores con filtros', 
-    description: 'Obtiene todos los proveedores con opción de filtrar por marca y estado' 
-  })
-  @ApiQuery({ 
-    name: 'brandId', 
-    required: false, 
-    type: Number,
-    description: 'ID de la marca para filtrar proveedores',
-    example: 1
-  })
-  @ApiQuery({ 
-    name: 'isActive', 
-    required: false, 
-    type: Boolean,
-    description: 'Filtrar por estado activo/inactivo',
-    example: true
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de proveedores filtrados',
-    type: BrandSupplier,
-    isArray: true,
-    examples: {
-      'Proveedores activos': {
-        summary: 'Ejemplo de respuesta exitosa',
-        value: [
-          {
-            supplierId: 1,
-            name: 'Proveedor de Materiales Premium S.A.',
-            contactPerson: 'Juan Pérez',
-            email: 'contacto@proveedormaterials.com',
-            phone: '9876543210',
-            address: 'Av. Industrial 123, Lima, Perú',
-            isActive: true,
-            createdAt: '2023-05-15',
-            updatedAt: '2023-05-20',
-            brand: {
-              brandId: 1,
-              name: 'Nike'
-            }
-          }
-        ]
-      },
-      'Proveedores inactivos': {
-        summary: 'Ejemplo de proveedores inactivos',
-        value: [
-          {
-            supplierId: 3,
-            name: 'Proveedor Antiguo S.A.',
-            contactPerson: null,
-            email: 'antiguo@proveedor.com',
-            phone: null,
-            address: null,
-            isActive: false,
-            createdAt: '2022-01-10',
-            updatedAt: '2023-01-15',
-            brand: {
-              brandId: 1,
-              name: 'Nike'
-            }
-          }
-        ]
-      }
+@ApiOperation({ 
+  summary: 'Obtener proveedores con filtros', 
+  description: 'Obtiene todos los proveedores con opción de filtrar por marca y estado' 
+})
+@ApiQuery({ 
+  name: 'brandId', 
+  required: false, 
+  type: Number,
+  description: 'ID de la marca para filtrar proveedores',
+  example: 1
+})
+@ApiQuery({ 
+  name: 'isActive', 
+  required: false, 
+  type: Boolean,
+  description: 'Filtrar por estado activo/inactivo',
+  example: true
+})
+@ApiResponse({
+  status: 200,
+  description: 'Lista de proveedores filtrados',
+  type: BrandSupplier,
+  isArray: true,
+  examples: {
+    'Proveedores activos': {
+      summary: 'Ejemplo de respuesta exitosa',
+      value: [/*...como lo tienes arriba*/]
+    },
+    'Proveedores inactivos': {
+      summary: 'Ejemplo de proveedores inactivos',
+      value: [/*...como lo tienes arriba*/]
     }
-  })
-  async findAll(
-    @Query('brandId') brandId?: number,
-    @Query('isActive') isActive?: boolean,
-  ): Promise<BrandSupplier[]> {
-    return this.brandSuppliersService.findAll({ brandId, isActive });
   }
+})
+@ApiResponse({ status: 400, description: 'Parámetros inválidos' })
+@ApiResponse({ status: 500, description: 'Error interno del servidor' })
+async findAll(
+  @Query('brandId') brandId?: string,
+  @Query('isActive') isActive?: string,
+): Promise<BrandSupplier[]> {
+  try {
+    const filters: { brandId?: number; isActive?: boolean } = {};
+
+    // Validación y parsing de brandId
+    if (brandId !== undefined) {
+      const parsedBrandId = parseInt(brandId, 10);
+      if (isNaN(parsedBrandId)) {
+        throw new BadRequestException('El parámetro "brandId" debe ser un número válido.');
+      }
+      filters.brandId = parsedBrandId;
+    }
+
+    // Validación y parsing de isActive
+    if (isActive !== undefined) {
+      if (isActive !== 'true' && isActive !== 'false') {
+        throw new BadRequestException('El parámetro "isActive" debe ser "true" o "false".');
+      }
+      filters.isActive = isActive === 'true';
+    }
+
+    return await this.brandSuppliersService.findAll(filters);
+
+  } catch (error) {
+    if (error instanceof BadRequestException) {
+      throw error;
+    }
+    console.error('Error al obtener proveedores:', error);
+    throw new InternalServerErrorException('Ocurrió un error al obtener los proveedores.');
+  }
+}
 
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un proveedor por ID' })
